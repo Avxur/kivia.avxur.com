@@ -21,8 +21,10 @@ export class Monologue {
     while (this.el.children.length > 10) this.el.firstChild.remove();
   }
   update(dt, asleep) {
-    if (!this.visible || this.reduced) return;
-    this.acc += dt * (asleep ? 0.5 : 1.3);
+    if (!this.visible) return;
+    // With "reduce motion" on it still never stops (that's the whole point of it),
+    // it just goes quieter: new lines come in more slowly.
+    this.acc += dt * (asleep ? 0.5 : 1.3) * (this.reduced ? 0.45 : 1);
     if (this.acc > 1) { this.acc = 0; this.push(); }
   }
 }
