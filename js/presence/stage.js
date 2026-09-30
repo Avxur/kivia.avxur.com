@@ -83,7 +83,7 @@ const FULL_TALL = {
   sofar: { dist: 1.9, look: -0.14 },
   words: { dist: 1.7, look: -0.12 },
   together: { dist: 1.8, look: -0.12 },
-  footer:{ dist: 2.1, look: -0.06 },
+  footer:{ dist: 2.1, look: -0.24 },
 };
 
 const _v = new THREE.Vector3();
@@ -151,6 +151,8 @@ export class Stage {
     const g = { ...table[name] };
     // her professional look is a bust of light, so every framing sits closer
     if (this.body?.framing === 'full') Object.assign(g, (this.tall ? FULL_TALL : FULL_WIDE)[name] || {});
+    // in a short window the footer's words reach up to her face, so she stands a little higher
+    if (name === 'footer' && this.body?.framing === 'full' && !this.tall) g.look -= clamp((1000 - this.h) / 1400, 0, 0.13);
     else if (this.body?.kind === 'wisp' || this.body?.framing === 'bust') Object.assign(g, (this.tall ? PRO_TALL : PRO_WIDE)[name] || {});
     this.goal = g;
     if (instant) Object.assign(this.p, this.goal);
