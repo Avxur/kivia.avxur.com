@@ -107,7 +107,7 @@ function eyePetalTexture(mirror = false) {
 const VERT = /* glsl */`
 uniform float uTime; uniform float uBreath; uniform float uEnergy; uniform float uSleep; uniform float uScatter;
 uniform float uScale; uniform float uDisperse; uniform mat3 uHeadRot; uniform vec3 uNeck; uniform vec3 uTint;
-uniform float uArmL; uniform float uArmR; uniform vec3 uShL; uniform vec3 uShR; uniform float uWind;
+uniform float uArmL; uniform float uArmR; uniform vec3 uShL; uniform vec3 uShR; uniform float uWind; uniform float uLoose;
 attribute vec3 aHome; attribute vec3 aNormal; attribute vec3 aColor;
 attribute float aRegion; attribute float aSeed; attribute float aHeadW; attribute float aArm;
 attribute float aSize; attribute float aLoose; attribute float aCell; attribute float aRot; attribute float aU;
@@ -160,8 +160,12 @@ void main(){
   }
   // loose petals let go on the wind, then grow back
   if (aLoose > 0.0) {
-    float speed = (0.04 + 0.06 * hash(aSeed * 7.0)) * (1.0 + uScatter * 3.0 + uEnergy * 0.4 + (uWind - 1.0) * 0.6) * (1.0 - uSleep * 0.5);
-    float ph = fract(t * speed + aSeed * 13.0);
+    // uLoose is a clock that already runs faster in a gust or a fright and slower
+    // in sleep (see update), so a petal's phase only ever moves forward, gently.
+    // (It used to be uTime * speed: with a speed that changes, that product
+    // swings further the longer the page has been open, and petals whizzed.)
+    float speed = 0.04 + 0.06 * hash(aSeed * 7.0);
+    float ph = fract(uLoose * speed + aSeed * 13.0);
     float go = smoothstep(0.5, 1.0, ph) * aLoose;
     vec3 wind = vec3(-0.35 * uWind, -0.1, 0.05) + 0.12 * vec3(hash(aSeed * 5.0) - 0.5, hash(aSeed * 9.0) - 0.3, hash(aSeed * 11.0) - 0.5);
     p += wind * go * 0.6 + vec3(sin(t * 3.0 + aSeed * 10.0), cos(t * 2.3 + aSeed * 6.0), 0.0) * 0.02 * go;
@@ -502,7 +506,7 @@ export class PetalHumanoid {
         uTime: { value: 0 }, uBreath: { value: 0 }, uEnergy: { value: 0.3 }, uSleep: { value: 0 }, uScatter: { value: 0 },
         uScale: { value: 900 }, uDisperse: { value: 0 }, uHeadRot: { value: new THREE.Matrix3() }, uNeck: { value: NECK_PIVOT.clone() },
         uTint: { value: new THREE.Color(1, 1, 1) }, uArmL: { value: 0 }, uArmR: { value: 0 },
-        uShL: { value: SHOULDER[0].clone() }, uShR: { value: SHOULDER[1].clone() }, uAtlas: { value: atlas() }, uWind: { value: 1 },
+        uShL: { value: SHOULDER[0].clone() }, uShR: { value: SHOULDER[1].clone() }, uAtlas: { value: atlas() }, uWind: { value: 1 }, uLoose: { value: 0 },
       },
     });
     this.points = new THREE.Points(this.geo, this.mat);
@@ -554,6 +558,8 @@ export class PetalHumanoid {
 
     // the breeze rises and falls, never on a beat
     u.uWind.value = 0.8 + 0.25 * Math.sin(this.t * 0.31) + 0.15 * Math.sin(this.t * 0.77 + 1.3) + 0.08 * Math.sin(this.t * 1.9);
+    // the loose petals' own clock: faster in a gust, a fright or when she's lively, slower asleep
+    u.uLoose.value += dt * (1 + this.scatter * 3 + u.uEnergy.value * 0.4 + (u.uWind.value - 1) * 0.6) * (1 - u.uSleep.value * 0.5);
     // scattering takes ~2 s, gathering back ~2.5 s
     const dir = Math.sign(this.disperseGoal - this.disperse);
     this.disperse = clamp(this.disperse + dir * dt / (dir > 0 ? 2.0 : 2.5));

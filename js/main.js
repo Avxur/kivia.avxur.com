@@ -97,7 +97,9 @@ function currentStage() {
 let lastY = window.scrollY, lastStage = 'hero';
 function onScroll() {
   const y = window.scrollY;
-  petals.scrollV += (y - lastY) * 6;
+  // a jump (a menu link, Home/End) is thousands of pixels at once: capped, so
+  // the petals get a push, not a launch
+  petals.scrollV = Math.max(-1600, Math.min(1600, petals.scrollV + (y - lastY) * 6));
   lastY = y;
   const name = currentStage();
   if (name !== lastStage) {
