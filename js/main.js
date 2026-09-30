@@ -115,6 +115,27 @@ function onScroll() {
 }
 window.addEventListener('scroll', onScroll, { passive: true });
 
+/* ---------------- a clean address: kivia.avxur.com, never .../#top ---------------- */
+// The menu and the name in the corner still take you where they say (smoothly,
+// from the CSS), but the address bar keeps the plain address instead of
+// picking up #top, #tree and the rest.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const target = document.getElementById(a.getAttribute('href').slice(1));
+  if (!target) return;
+  e.preventDefault();
+  target.scrollIntoView({ behavior: 'auto' });   // 'auto' = whatever the CSS says (smooth, or instant for reduced motion)
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+});
+// arriving from an old link with #something on it: go there, then tidy the address
+window.addEventListener('load', () => {
+  if (!location.hash) return;
+  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (target) target.scrollIntoView({ behavior: 'instant' });
+  history.replaceState(null, '', location.pathname + location.search);
+});
+
 function onEnterStage(name, prev) {
   if (prev === 'mind' && dreaming) setDream(false, true);
   if (name === 'star') starSeen = false;
