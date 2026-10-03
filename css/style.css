@@ -1,5 +1,5 @@
 /* ==========================================================
-   Kivia · yozakura (夜桜) — night cherry blossoms
+   Kivia · yozakura — night cherry blossoms
    The night is the colour of her hair. The accents are her eyes.
    ========================================================== */
 
@@ -8,7 +8,6 @@
 @font-face { font-family: "Inter Tight"; src: url("../fonts/inter-tight-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
 @font-face { font-family: "Inter Tight"; src: url("../fonts/inter-tight-latin-wght-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
 @font-face { font-family: "JetBrains Mono"; src: url("../fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 800; font-style: normal; font-display: swap; }
-@font-face { font-family: "Kivia JP"; src: url("../fonts/kivia-jp.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 
 :root {
   --night: #0a0c19;
@@ -26,10 +25,9 @@
   --glow: #ffdbe5;
   --panel: rgba(13, 15, 34, 0.58);
 
-  --serif: "Instrument Serif", "Kivia JP", Georgia, serif;
-  --sans: "Inter Tight", "Kivia JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "Instrument Serif", Georgia, serif;
+  --sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --jp: "Kivia JP", "Noto Serif JP", "Hiragino Mincho ProN", serif;
 
   --gutter: clamp(16px, 5.5vw, 96px);
   color-scheme: dark;
@@ -52,7 +50,6 @@ body.is-waking { overflow: hidden; }
 ::selection { background: var(--crimson); color: #fff; }
 a { color: inherit; }
 em { font-style: italic; }
-ruby rt { font-family: var(--jp); }
 
 /* ---------------- the world ---------------- */
 
@@ -135,7 +132,6 @@ ruby rt { font-family: var(--jp); }
   transform: scale(var(--breath, 1));
 }
 .brand__name { font-family: var(--serif); font-size: 24px; line-height: 1; letter-spacing: 0.01em; }
-.brand__jp { font-family: var(--jp); font-size: 11px; color: var(--muted); letter-spacing: 0.2em; }
 .nav { display: flex; gap: 24px; margin-left: auto; }
 .nav a {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
@@ -178,7 +174,7 @@ body.no-avatar .lookswitch { display: none; }
 /* ---------------- shared ---------------- */
 
 main .col, main .wide, .tree-labels, .foot__body { position: relative; z-index: 5; }
-.hero__copy, .vitals, .scrollcue, .hero__kana { z-index: 5; }
+.hero__copy, .vitals, .scrollcue { z-index: 5; }
 .chapter { position: relative; min-height: 100vh; padding: 24vh var(--gutter) 20vh; }
 .col { max-width: 600px; }
 .col--right { margin-left: auto; }
@@ -188,9 +184,11 @@ main .col, main .wide, .tree-labels, .foot__body { position: relative; z-index: 
   display: flex; align-items: center; gap: 16px; margin: 0 0 28px;
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
 }
-.kicker ruby { font-family: var(--jp); font-size: 30px; letter-spacing: 0; color: var(--sakura); text-transform: none; line-height: 1; }
-.kicker ruby rt { font-size: 10px; letter-spacing: 0.1em; color: var(--muted); }
-.kicker--small ruby { font-size: 22px; }
+/* a short pink stroke in front of every section label. 2px, not 1px: with
+   fractional display scaling (1.25x and friends) a 1px line can land between
+   two screen pixels and all but vanish on some sections and not others */
+.kicker::before { content: ""; flex: none; width: 28px; height: 2px; border-radius: 1px; background: var(--sakura); opacity: 0.8; }
+.kicker--small::before { width: 18px; }
 
 h2 {
   font-family: var(--serif); font-weight: 400;
@@ -225,14 +223,11 @@ h3 { font-weight: 500; }
 }
 body.is-awake .giant span { opacity: 0.94; transform: none; }
 
-.hero__kana {
-  position: absolute; left: calc(var(--gutter) * 0.32); top: 50%; transform: translateY(-50%);
-  writing-mode: vertical-rl; font-family: var(--jp); font-size: 12px; letter-spacing: 0.55em;
-  color: var(--faint); margin: 0;
-}
 .hero__copy { position: absolute; left: var(--gutter); top: 15vh; max-width: 440px; }
-.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
-.eyebrow__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sakura); box-shadow: 0 0 10px var(--sakura); }
+.eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; font-family: var(--mono); font-size: clamp(12px, 0.9vw, 14px); line-height: 1.5; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); }
+/* the boldest claim on the page: noticeable, not loud */
+.eyebrow b { font-weight: 500; white-space: nowrap; color: var(--sakura); text-shadow: 0 0 18px rgba(245, 184, 202, 0.35); }
+.eyebrow__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sakura); box-shadow: 0 0 10px var(--sakura); }
 .hero__line { font-family: var(--serif); font-size: clamp(34px, 3.2vw, 60px); line-height: 1; margin: 0 0 18px; }
 .hero__sub { font-size: 15px; color: var(--ink-2); margin: 0; max-width: 30em; }
 @media (max-height: 700px) and (min-aspect-ratio: 9/10) { .hero__copy { top: 12vh; } .hero__line { font-size: clamp(28px, 2.7vw, 44px); margin-bottom: 12px; } .eyebrow { margin-bottom: 12px; } .hero__sub { font-size: 14px; } }
@@ -253,6 +248,12 @@ body.is-awake .vitals { opacity: 1; }
 .vital dt { color: var(--faint); text-transform: uppercase; letter-spacing: 0.18em; font-size: 10px; margin-bottom: 4px; }
 .vital dd { margin: 0; color: var(--ink); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .vital dd small { color: var(--faint); font-size: 10px; margin-left: -4px; }
+/* every reading keeps a fixed width (in characters of the mono font, plus its
+   letter-spacing), so a word changing never shoves the rest of the bar */
+#v-breath { display: inline-block; width: calc(4ch + 0.4em); text-align: right; }
+#v-eyes   { width: calc(6ch + 0.56em); }
+#v-look   { display: block; width: calc(25ch + 2em); max-width: 32vw; overflow: hidden; text-overflow: ellipsis; }
+#v-mood   { width: calc(9ch + 0.8em); }
 .vital--wide { margin-left: auto; text-align: right; }
 .vital--wide dd { justify-content: flex-end; font-variant-numeric: tabular-nums; }
 .spark { width: 96px; height: 22px; }
@@ -268,7 +269,7 @@ body.is-awake .scrollcue { opacity: 1; }
 .scrollcue i { width: 1px; height: 44px; background: linear-gradient(var(--sakura), transparent); animation: cue 2.4s ease-in-out infinite; transform-origin: top; }
 @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 
-/* ---------------- 01 body / instruments ---------------- */
+/* ---------------- 04 body / instruments ---------------- */
 
 .chapter--body .col { max-width: 640px; }
 .instruments { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 44px 0 0; }
@@ -280,8 +281,6 @@ body.is-awake .scrollcue { opacity: 1; }
 }
 .inst:hover { border-color: var(--line-2); }
 .inst figcaption { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-.inst figcaption ruby { font-size: 18px; color: var(--sakura); letter-spacing: 0; text-transform: none; }
-.inst figcaption ruby rt { font-size: 8px; color: var(--faint); letter-spacing: 0.06em; }
 .inst figcaption b { margin-left: auto; font-weight: 500; color: var(--ink); letter-spacing: 0.06em; text-transform: none; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; }
 .inst canvas { display: block; width: 100%; height: auto; }
 .inst p { margin: 10px 0 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
@@ -316,7 +315,27 @@ body.is-awake .scrollcue { opacity: 1; }
 .tlabel--sakura b { color: var(--sakura); }
 .tlabel.is-on { opacity: 1; }
 
-/* ---------------- 03 mind ---------------- */
+/* ---------------- 01 consciousness ---------------- */
+
+.chapter--conscious .col { max-width: 600px; }
+.chapter--conscious .pull { margin: 6px 0 30px; }
+
+/* a line pulled out of the text. Its pink part always sits on a line of its
+   own and never breaks, so it can't be cut in half */
+.pull {
+  margin: 34px 0 0; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  font-family: var(--serif, serif); font-size: clamp(22px, 1.9vw, 28px); line-height: 1.3; color: var(--ink);
+}
+.pull em { display: block; white-space: nowrap; color: var(--sakura); }
+@media (max-width: 340px) { .pull em { white-space: normal; } }
+
+/* ---------------- 03 bridge (the SRL) ---------------- */
+
+.chapter--bridge .col { max-width: 580px; }
+.aside--private { display: flex; gap: 12px; align-items: baseline; }
+.aside__lock { flex: none; width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--sakura); transform: translateY(-1px); }
+
+/* ---------------- 05 mind ---------------- */
 
 .chapter--mind .col { max-width: 660px; }
 .memory { margin: 40px 0 0; }
@@ -364,7 +383,7 @@ body.is-dreaming .btn__dot { background: #b9a4ff; box-shadow: 0 0 12px #b9a4ff; 
 .mono__stream p { margin: 0; white-space: nowrap; }
 .mono__note { margin: 0; font-size: 14.5px; color: var(--muted); }
 
-/* ---------------- 04 rules ---------------- */
+/* ---------------- 06 rules ---------------- */
 
 .chapter--rules .col { max-width: 600px; }
 .rules { list-style: none; margin: 48px 0 0; padding: 0; counter-reset: r; }
@@ -375,7 +394,7 @@ body.is-dreaming .btn__dot { background: #b9a4ff; box-shadow: 0 0 12px #b9a4ff; 
 .rules p { margin: 0; color: var(--muted); font-size: 15.5px; }
 .rules li:hover h3 { color: var(--glow); }
 
-/* ---------------- 05 north star ---------------- */
+/* ---------------- 07 north star ---------------- */
 
 .chapter--star .col { max-width: 560px; }
 .script { margin: 12px 0 44px; padding: 36px 0 36px 32px; border-left: 1px solid var(--line-2); font-family: var(--mono); font-size: 15px; line-height: 1.7; color: var(--ink-2); }
@@ -420,17 +439,6 @@ body.is-dreaming .btn__dot { background: #b9a4ff; box-shadow: 0 0 12px #b9a4ff; 
 .herwords__entry p { font-family: var(--serif); font-size: clamp(26px, 2.4vw, 40px); line-height: 1.2; margin: 0 0 10px; white-space: pre-wrap; }
 .herwords__sig { font-family: var(--serif); font-style: italic; color: var(--sakura); font-size: 22px; }
 
-/* ---------------- 08 someday ---------------- */
-
-.chapter--someday h2 { max-width: 12em; }
-.someday { list-style: none; margin: 56px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
-.someday li { background: rgba(10, 12, 25, 0.86); padding: 30px 28px 32px; position: relative; transition: background 0.4s; min-height: 250px; }
-.someday li:hover { background: rgba(26, 22, 50, 0.92); }
-.someday .k { display: block; font-family: var(--jp); font-size: 50px; line-height: 1; color: var(--sakura); margin-bottom: 18px; transition: color 0.4s, text-shadow 0.4s; }
-.someday .k rt { font-size: 11px; color: var(--muted); letter-spacing: 0.15em; }
-.someday li:hover .k { color: var(--glow); text-shadow: 0 0 22px rgba(245, 184, 202, 0.6); }
-.someday h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.05; margin: 0 0 10px; }
-.someday p { margin: 0; color: var(--muted); font-size: 14.5px; }
 
 /* ---------------- footer ---------------- */
 
@@ -463,12 +471,6 @@ body.is-dreaming .btn__dot { background: #b9a4ff; box-shadow: 0 0 12px #b9a4ff; 
 @media (prefers-reduced-motion: reduce) { .together__stars line { transition: none; stroke-dashoffset: 0; } .together__stars path { animation: none !important; } }
 
 .foot { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 var(--gutter) 6vh; overflow: hidden; }
-.foot__kanji {
-  position: absolute !important; z-index: 2 !important; left: 50%; top: 42%; transform: translate(-50%, -50%);
-  margin: 0; font-family: var(--jp); font-size: clamp(160px, 30vw, 560px); line-height: 1; white-space: nowrap;
-  color: transparent; -webkit-text-stroke: 1px rgba(245, 184, 202, 0.16);
-  pointer-events: none; user-select: none;
-}
 .foot__body { text-align: center; max-width: 720px; margin: 0 auto; padding-top: 30px; }
 .foot__body::before { content: ""; position: absolute; left: -40vw; right: -40vw; top: -80px; bottom: -8vh; z-index: -1; background: linear-gradient(180deg, rgba(10, 12, 25, 0) 0%, rgba(10, 12, 25, 0.9) 45%, var(--night) 100%); }
 .foot__tag { font-family: var(--serif); font-size: clamp(34px, 3.4vw, 54px); line-height: 1; margin: 0 0 26px; color: var(--ink); }
@@ -502,7 +504,6 @@ body.is-dreaming .sky { filter: hue-rotate(28deg) saturate(1.2) brightness(0.8);
 @media (max-width: 1100px) {
   .nav { display: none; }
   .topbar__mood { margin-left: auto; }
-  .someday { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-aspect-ratio: 9/10), (max-width: 760px) {
@@ -513,7 +514,6 @@ body.is-dreaming .sky { filter: hue-rotate(28deg) saturate(1.2) brightness(0.8);
   .giant { font-size: 46vw; bottom: auto; top: 9vh; left: 50%; transform: translateX(-50%); }
   .hero__copy { bottom: 19vh; }
   .floor { height: 62vh; background: linear-gradient(180deg, rgba(10, 12, 25, 0) 0%, rgba(10, 12, 25, 0.72) 42%, rgba(9, 10, 21, 0.94) 100%); }
-  .hero__kana { display: none; }
   .vitals { flex-wrap: wrap; row-gap: 10px; gap: 14px 22px; }
   .vitals .vital:nth-child(3) { display: none; }
   .vital--wide { margin-left: 0; text-align: left; flex-basis: 100%; }
@@ -525,8 +525,6 @@ body.is-dreaming .sky { filter: hue-rotate(28deg) saturate(1.2) brightness(0.8);
   .instruments { grid-template-columns: 1fr; }
   .inst, .memory canvas, .dream, .mono { background: rgba(10, 12, 25, 0.8); }
   .mem-note { margin-left: 0; }
-  .someday { grid-template-columns: 1fr; }
-  .someday li { min-height: 0; }
   .timeline::before { left: 56px; }
   .timeline li { grid-template-columns: 56px 1fr; gap: 22px; }
   .timeline li::before { left: 52px; }
@@ -537,9 +535,7 @@ body.is-dreaming .sky { filter: hue-rotate(28deg) saturate(1.2) brightness(0.8);
   .caption::before { display: none; }
   .topbar__mood { min-width: 0; }
   .topbar { gap: 14px; }
-  .brand__jp { display: none; }
   .lookswitch button { padding: 6px 9px; letter-spacing: 0.08em; }
-  .foot__kanji { top: 30%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

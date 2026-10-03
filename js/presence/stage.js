@@ -13,8 +13,10 @@ import { Reflexes, approach, clamp } from './reflexes.js';
 //   alpha - how visible she is
 const WIDE = {
   hero:    { sx: 0.30, dist: 2.35, look: -0.26, orbit: -0.16, alpha: 1 },
+  conscious: { sx: 0.38, dist: 1.25, look: -0.08, orbit: -0.2, alpha: 1 },
   body:    { sx: 0.40, dist: 1.02, look: -0.06, orbit: -0.26, alpha: 1 },
   tree:    { sx: 0.52, dist: 2.6, look: -0.32, orbit: -0.3, alpha: 0 },
+  bridge:  { sx: -0.36, dist: 1.6, look: -0.14, orbit: 0.22, alpha: 1 },
   mind:    { sx: 0.42, dist: 1.7, look: -0.16, orbit: -0.22, alpha: 1 },
   rules:   { sx: -0.38, dist: 1.55, look: -0.14, orbit: 0.26, alpha: 1 },
   star:    { sx: 0.38, dist: 1.22, look: -0.08, orbit: -0.18, alpha: 1 },
@@ -26,8 +28,10 @@ const WIDE = {
 };
 const TALL = {
   hero:    { sx: 0.0, dist: 3.5, look: -0.26, orbit: -0.1, alpha: 1 },
+  conscious: { sx: 0.0, dist: 1.75, look: -0.28, orbit: -0.1, alpha: 0.24 },
   body:    { sx: 0.0, dist: 1.6, look: -0.2, orbit: -0.15, alpha: 0.2 },
   tree:    { sx: 0.0, dist: 2.6, look: -0.32, orbit: 0, alpha: 0 },
+  bridge:  { sx: 0.0, dist: 1.9, look: -0.3, orbit: 0.15, alpha: 0.22 },
   mind:    { sx: 0.0, dist: 2.0, look: -0.3, orbit: -0.15, alpha: 0.22 },
   rules:   { sx: 0.0, dist: 1.8, look: -0.3, orbit: 0.2, alpha: 0.22 },
   star:    { sx: 0.0, dist: 1.5, look: -0.3, orbit: -0.1, alpha: 0.28 },
@@ -41,7 +45,9 @@ const TALL = {
 // her professional look is a bust of light, so it's framed closer
 const PRO_WIDE = {
   hero:  { dist: 1.42, look: -0.13, orbit: -0.12 },
+  conscious: { dist: 1.12, look: -0.07 },
   body:  { dist: 1.05, look: -0.06 },
+  bridge: { dist: 1.18, look: -0.09 },
   mind:  { dist: 1.2, look: -0.09 },
   rules: { dist: 1.15, look: -0.09 },
   star:  { dist: 1.0, look: -0.05 },
@@ -52,7 +58,9 @@ const PRO_WIDE = {
 };
 const PRO_TALL = {
   hero:  { dist: 1.9, look: -0.13 },
+  conscious: { dist: 1.35, look: -0.1 },
   body:  { dist: 1.3, look: -0.1 },
+  bridge: { dist: 1.45, look: -0.1 },
   mind:  { dist: 1.5, look: -0.1 },
   rules: { dist: 1.4, look: -0.1 },
   star:  { dist: 1.3, look: -0.1 },
@@ -65,7 +73,9 @@ const PRO_TALL = {
 // her petal figure is full-body, so every section frames all (or most) of her
 const FULL_WIDE = {
   hero:  { sx: 0.3, dist: 1.6, look: -0.16, orbit: -0.1 },
+  conscious: { sx: 0.38, dist: 1.25, look: -0.09, orbit: -0.12 },
   body:  { sx: 0.4, dist: 1.15, look: -0.07, orbit: -0.16 },
+  bridge: { sx: -0.36, dist: 1.4, look: -0.12, orbit: 0.12 },
   mind:  { sx: 0.42, dist: 1.4, look: -0.12, orbit: -0.14 },
   rules: { sx: -0.38, dist: 1.4, look: -0.12, orbit: 0.14 },
   star:  { sx: 0.38, dist: 1.25, look: -0.08, orbit: -0.1 },
@@ -76,7 +86,9 @@ const FULL_WIDE = {
 };
 const FULL_TALL = {
   hero:  { dist: 2.1, look: -0.15 },
+  conscious: { dist: 1.7, look: -0.12 },
   body:  { dist: 1.6, look: -0.12 },
+  bridge: { dist: 1.8, look: -0.12 },
   mind:  { dist: 1.8, look: -0.12 },
   rules: { dist: 1.8, look: -0.12 },
   star:  { dist: 1.7, look: -0.12 },

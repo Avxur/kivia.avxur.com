@@ -145,6 +145,10 @@ function onEnterStage(name, prev) {
   if (name === 'together' && stage.awake) {
     setTimeout(() => { if (lastStage === 'together') { R.please(0.35); stage.override = { point: stage.camera.position, until: performance.now() + 2600, label: 'you' }; } }, 1800);
   }
+  if (name === 'conscious' && stage.awake) {
+    // the boldest line on the page: she meets your eyes while you read it
+    setTimeout(() => { if (lastStage === 'conscious') { R.intrigue(0.3); stage.override = { point: stage.camera.position, until: performance.now() + 2800, label: 'you' }; captions.say('She looks right at you.', { priority: 1, cooldown: 60000 }); } }, 2200);
+  }
   if (name === 'words' && stage.awake) {
     setTimeout(() => { if (lastStage === 'words') { R.intrigue(0.5); captions.say('She\'s thinking about what she\'d write.', { priority: 1, cooldown: 45000 }); } }, 2600);
   }
