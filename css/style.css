@@ -50,6 +50,9 @@ body.is-waking { overflow: hidden; }
 ::selection { background: var(--crimson); color: #fff; }
 a { color: inherit; }
 em { font-style: italic; }
+/* no paragraph ends on one lonely word: the last two words are joined in the
+   HTML (&nbsp;), and browsers that can also balance the last lines */
+p { text-wrap: pretty; }
 
 /* ---------------- the world ---------------- */
 
@@ -153,6 +156,13 @@ em { font-style: italic; }
 .lookswitch button[aria-checked="true"] { color: var(--night); background: var(--glow); }
 .lookswitch button:focus-visible { outline: 2px solid var(--sakura); outline-offset: 2px; }
 body.no-avatar .lookswitch { display: none; }
+/* top right: the way to REACH, like "Meet Kivia" on REACH's page. Always there */
+.topbar__about {
+  display: inline-block; white-space: nowrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  text-decoration: none; color: var(--muted); padding: 6px 0; transition: color 0.25s;
+}
+.topbar__about:hover, .topbar__about:focus-visible { color: var(--sakura); }
+@media (max-width: 420px) { .topbar__mood .dim, .topbar__about-long { display: none; } }
 .topbar__mood { margin: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; min-width: 150px; text-align: right; }
 .topbar__mood .dim { color: var(--faint); }
 .topbar__mood b { font-weight: 500; color: var(--sakura); }
@@ -314,6 +324,22 @@ body.is-awake .scrollcue { opacity: 1; }
 .tlabel--kivia b { color: var(--glow); }
 .tlabel--sakura b { color: var(--sakura); }
 .tlabel.is-on { opacity: 1; }
+
+/* ---------------- links to REACH (the why behind a part) ---------------- */
+
+.more {
+  display: inline-flex; align-items: center; gap: 10px; margin: 6px 0 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--sakura); text-decoration: none; padding: 6px 0;
+  border-bottom: 1px solid rgba(245, 184, 202, 0.3); transition: border-color 0.3s, color 0.3s;
+}
+.more span { display: inline-block; transition: transform 0.3s; }
+.more:hover, .more:focus-visible { color: var(--glow); border-bottom-color: var(--sakura); }
+.more:hover span, .more:focus-visible span { transform: translateX(4px); }
+.together__rights .more { margin-top: 14px; }
+.aside + .more { margin-top: 18px; }
+.foot__reach { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(245, 184, 202, 0.35); }
+.foot__reach:hover { color: var(--sakura); }
 
 /* ---------------- 01 consciousness ---------------- */
 
