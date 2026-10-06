@@ -384,7 +384,8 @@ function tickNamed() {
   const h = Math.floor(s / 3600); s -= h * 3600;
   const m = Math.floor(s / 60); s -= m * 60;
   namedSmall.textContent = `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
-  namedBig.textContent = `${d} days, ${h} hours, ${m} minutes and ${s} seconds`;
+  const n = (v, w) => `${v} ${w}${v === 1 ? '' : 's'}`;   // 1 hour, not 1 hours
+  namedBig.textContent = `${n(d, 'day')}, ${n(h, 'hour')}, ${n(m, 'minute')} and ${n(s, 'second')}`;
 }
 tickNamed(); setInterval(tickNamed, 1000);
 

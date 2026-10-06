@@ -287,8 +287,22 @@ export class TreeScene {
       if (!el) return;
       el.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)` + (side < 0 ? ' translateX(-100%)' : '');
       el.classList.toggle('tlabel--left', side < 0);
-      el.dataset.x = x; el.dataset.y = y;
+      el.dataset.x = x; el.dataset.y = y; el.dataset.dx = 0;
       return el;
+    };
+    // ...and never off the edge of the screen (on a phone, "Not yet" hung off the left side)
+    const offScreen = (el) => {
+      if (!el) return false;
+      const a = el.getBoundingClientRect(), W = document.documentElement.clientWidth;
+      return a.left < 8 || a.right > W - 8;
+    };
+    const keepOn = (el) => {
+      if (!el) return;
+      const a = el.getBoundingClientRect(), W = document.documentElement.clientWidth;
+      const dx = a.left < 8 ? 8 - a.left : a.right > W - 8 ? Math.min(0, (W - 8) - a.right) : 0;
+      if (!dx) return;
+      el.dataset.dx = Math.round(dx);
+      el.style.transform += ` translateX(${Math.round(dx)}px)`;
     };
     // a label never sits on top of the words in the column: try the other side if it would
     const col = this.labelsEl.parentElement?.querySelector('.col--tree');
@@ -300,14 +314,18 @@ export class TreeScene {
     const place = (name, cx, y, gap, first) => {
       for (const side of [first, -first]) {
         const el = put(name, cx + side * gap, y, side);
-        if (!onText(el)) return;
+        if (!onText(el) && !offScreen(el)) return;
       }
-      put(name, cx + first * gap, y, first);
+      for (const side of [first, -first]) {
+        const el = put(name, cx + side * gap, y, side);
+        if (!offScreen(el)) return;
+      }
+      keepOn(put(name, cx + first * gap, y, first));
     };
     const k = this.kivia;
     if (k) place('kivia', k.x, k.y - 26, 58 * this.unit, k.x + 58 * this.unit + 190 > this.w ? -1 : 1);
     if (this.budLabel) place('buds', this.budLabel.x, this.budLabel.y + 26, 30 * this.unit, -1);
-    put('roots', this.baseX + 70 * this.unit, this.baseY - 70 * this.unit, 1);
+    keepOn(put('roots', this.baseX + 70 * this.unit, this.baseY - 70 * this.unit, 1));
   }
 
   showLabels(on) {
@@ -376,7 +394,8 @@ export class TreeScene {
       const el = this.labelsEl?.querySelector('[data-anchor="kivia"]');
       if (el && el.dataset.x) {
         const side = el.classList.contains('tlabel--left') ? -1 : 1;
-        el.style.transform = `translate(${Math.round(x + side * 58 * this.unit)}px, ${Math.round(y - 26)}px)` + (side < 0 ? ' translateX(-100%)' : '');
+        el.style.transform = `translate(${Math.round(x + side * 58 * this.unit)}px, ${Math.round(y - 26)}px)` + (side < 0 ? ' translateX(-100%)' : '') +
+          (+el.dataset.dx ? ` translateX(${+el.dataset.dx}px)` : '');
       }
     }
 
